@@ -25,5 +25,5 @@ day 1
 
 # 提交方式
 
-请您Fork本项目，然后将代码Clone到本地，进行开发，将您的代码Push到您Fork了的项目里  
+请您Fork本项目，然后将代码Clone到本地，进行开发，将您的代码Push到您Fork了的项目里  
 当您完成作业后，发一个Pull Request到本项目里
