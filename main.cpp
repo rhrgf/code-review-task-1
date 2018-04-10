@@ -14,7 +14,7 @@ int cmp(pair<string, int> x1, pair<string, int> x2)
 
 void sortMap(map<string, int>& tosort, vector<pair<string, int>>& sorted)
 {
-	for (map<string, int>::iterator cur = tosort.begin(); cur != tosort.end(); cur++)
+	for (auto cur = tosort.begin(); cur != tosort.end(); cur++)
 		sorted.push_back(make_pair(cur->first, cur->second));
 
 	sort(sorted.begin(), sorted.end(), cmp);
