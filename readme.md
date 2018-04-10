@@ -1,3 +1,6 @@
+/* something */
+
+
 f = open("words.txt",'r')
 char = f.read(1);
 
