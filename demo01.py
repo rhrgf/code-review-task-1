@@ -3,9 +3,13 @@
 import collections
 import os
 
-with open('text.txt') as f:
-    words=f.read().split(' ')
+words=[]
+with open('input.txt') as f:
+    for line in f:
+        words+=line.strip().split(' ')
 
 words_count =  collections.Counter(words)
-print words_count
-
+with open('output.txt','w') as f:
+    for (key,value) in sorted(words_count.items(),key=lambda x:x[1],reverse=True):
+        f.write(key+" "+str(value)+"\n")
+        print(key+" "+str(value)+"\n")
