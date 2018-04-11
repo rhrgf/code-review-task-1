@@ -1,0 +1,36 @@
+package wordcount;
+
+import wordcount.WordEntity;  
+
+public class WordEntity implements Comparable<WordEntity>{  
+    @Override  
+    public int compareTo(WordEntity o) {  
+        int cmp = count.intValue() - o.count.intValue();  
+        return (cmp == 0 ? key.compareTo(o.key) : -cmp);
+    }  
+  
+    private String key;  
+    private Integer count;  
+  
+    public WordEntity ( String key,Integer count) {  
+        this.key = key;  
+        this.count = count;  
+    }  
+  
+    public WordEntity(){  
+  
+    }  
+  
+    @Override  
+    public String toString() {  
+    	return key + " " + count;
+    }  
+  
+    public String getKey() {  
+        return key;  
+    }  
+  
+    public Integer getCount() {  
+        return count;  
+    }  
+}  
