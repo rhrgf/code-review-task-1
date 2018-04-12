@@ -1,19 +1,62 @@
 package wordcount;
 
-import java.util.Scanner;  
-
-import wordcount.WordCount;  
+import java.io.BufferedReader;  
+import java.io.FileNotFoundException;  
+import java.io.FileReader;  
+import java.io.IOException;  
+import java.util.HashMap;  
+import java.util.Iterator;  
+import java.util.Map;  
+import java.util.Set;  
+import java.util.StringTokenizer;    
+import java.util.TreeSet;  
+import wordcount.WordEntity;  
   
-public class Main {  
+public class WordCount {  
   
-      
-    public static void main(String[] args) {  
-        System.out.println("输入文件路径：\n");              
-        Scanner in=new Scanner(System.in);  
-        String line=in.nextLine();  
-        String fileName= line.trim();  
-        WordCount wc = new WordCount();  
-        wc.displayWord(fileName);  
+ 
+    public void displayWord(String fileName){  
+        //显示输出  
+        try {  
+            BufferedReader br = new BufferedReader(new FileReader(fileName));  
+            String s;  
+            StringBuffer sb = new StringBuffer();  
+            while ((s = br.readLine()) != null) {  
+                sb.append(s);  
+            }  
+              
+            Map<String,Integer> map = new HashMap<String, Integer>();  
+            StringTokenizer st = new StringTokenizer(sb.toString(),",.! \n");  
+            while (st.hasMoreTokens()) {  
+                String letter = st.nextToken().trim();  
+                int count;  
+                if (!map.containsKey(letter)) {  
+                    count = 1;  
+                } else {  
+                    count = map.get(letter).intValue() + 1;  
+                }  
+                map.put(letter,count);  
+            }  
+              
+            Set<WordEntity> set = new TreeSet<WordEntity>();  
+            for (String key : map.keySet()) {  
+                set.add(new WordEntity(key,map.get(key)));  
+            }  
+  
+           
+            Iterator<WordEntity> it1 = set.iterator();  
+            int count=it1.next().getCount();  
+            for (Iterator<WordEntity> it = set.iterator(); it.hasNext(); ) {  
+                WordEntity w = it.next();  
+     System.out.println(w.getKey() + "  "+ w.getCount());  
+                  
+            }  
+        } catch (FileNotFoundException e) {  
+            System.out.println("文件未找到~！");  
+        } catch (IOException e) {  
+            System.out.println("文件读异常~！");  
+        }  
+  
     }  
   
 }  
