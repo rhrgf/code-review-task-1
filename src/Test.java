@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Test {
     public static void main(String[] args) {
+        WordHelper wordHelper = new WordHelper();
         String fileName = "words.txt";
         Map<String, Word> wordMap = new HashMap<>();
 
@@ -14,13 +15,12 @@ public class Test {
              BufferedInputStream bis = new BufferedInputStream(fis)) {
 
             StringBuffer buff = new StringBuffer();
-            int c;
-            char ch;
+            int inByte;
 
             do {
-                c = bis.read();
-                ch = (char) c;
-                if (c != -1 && ch != ' ') {
+                inByte = bis.read();
+                char ch = (char) inByte;
+                if (inByte != -1 && ch != ' ') {
                     buff.append(ch);
                 } else {
                     if (wordMap.containsKey(buff.toString())) {
@@ -31,44 +31,13 @@ public class Test {
                     }
                     buff = new StringBuffer();
                 }
-            } while (c != -1);
+            } while (inByte != -1);
 
             bis.close();
             fis.close();
 
-            List<Map.Entry<String, Word>> wordList = new ArrayList<>(wordMap.entrySet());
-
-            /*Collections.sort(wordList, new Comparator<Map.Entry<String, Word>>() {
-                @Override
-                public int compare(Map.Entry<String, Word> o1, Map.Entry<String, Word> o2) {
-                    int c1 = o1.getValue().getCount();
-                    int c2 = o2.getValue().getCount();
-                    if (c1 < c2) {
-                        return -1;
-                    } else if (c1 > c2) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-            });*/
-
-            Collections.sort(wordList, (o1, o2) -> {
-                int c1 = o1.getValue().getCount();
-                int c2 = o2.getValue().getCount();
-                if (c1 < c2) {
-                    return 1;
-                } else if (c1 > c2) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            });
-
-            for (Map.Entry<String, Word> entry : wordList) {
-                Word w = entry.getValue();
-                System.out.println(w.getText() + " " + w.getCount());
-            }
+            wordHelper.sort(wordMap);
+            wordHelper.displayWordsInfo(wordMap);
 
         } catch (IOException e) {
             System.err.println(e.getMessage());
