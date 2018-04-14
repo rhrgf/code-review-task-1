@@ -1,8 +1,14 @@
 def main():
-    file_name=input("请输入文件名：")
-    file=open(file_name)
-    data=file.read()
-    words=data.split()
+    
+    while(1):
+        try:
+            with open(file_name) as file:
+                data=file.read()
+                words=data.split()
+            break
+        except:
+            file_name=input("文件名有误请再次输入：")
+            
     word_name=[]
     word_freq=[]
     
