@@ -20,6 +20,7 @@ namespace csharptest
             string[] ss = text.Split(' ');
 
             //字典方便计数但不方便排序
+            //我感觉接下来的注释可以去掉
             //Dictionary<string, int> wordStatus = new Dictionary<string, int>();
             //foreach (var word in ss)
             //{
