@@ -18,7 +18,27 @@ namespace csharptest
                                 (@"/Users/MedillEast/Documents/Project/Test/c#test/csharptest/csharptest/words.txt");
                                 //文件读取
 
+<<<<<<< HEAD
             string[] ss = text.Split(' ');	//以空格分割整个句子为单个单词
+=======
+            string[] ss = text.Split(' ');
+
+            //字典方便计数但不方便排序
+            //我感觉接下来的注释可以去掉
+            //Dictionary<string, int> wordStatus = new Dictionary<string, int>();
+            //foreach (var word in ss)
+            //{
+            //    if (wordStatus.ContainsKey(word))
+            //        wordStatus[word]++;
+            //    else
+            //        wordStatus.Add(word, 1);
+            //}
+
+            //foreach (var kvp in wordStatus)
+            //{
+            //    Console.WriteLine(kvp.Key.ToString() + " " + kvp.Value.ToString() + "\n");
+            //}
+>>>>>>> 2a6d3abc04f79832c50141429185d6827497e2c7
 
             //list
             List<string> wordsList = ss.ToList().Distinct().ToList();		//Distinct方法用于找出不同种类的单词，然后将其构建为list作为比较的参考
