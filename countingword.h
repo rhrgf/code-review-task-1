@@ -104,9 +104,3 @@ void wordcounting(char filename[100])
 	outputs();
 	return;
 }
-
-void main()
-{
-	wordcounting("word.txt");
-	return;
-}
