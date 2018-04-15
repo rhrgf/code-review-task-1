@@ -1,4 +1,4 @@
-#include "main.h"
+#include "flip.hpp"
 
 int main()
 {
