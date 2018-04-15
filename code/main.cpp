@@ -6,19 +6,19 @@ using namespace std;
 #define MAX_WORD_LENGTH 256
 #define CHAR_BASE 97
 
-typedef struct _Record{
+typedef struct _RECORD{
     string word;
     unsigned int count;
-    _Record(char * _word, unsigned int _count){
+    _RECORD(char * _word, unsigned int _count){
         word = _word;
         count = _count;
     }
 }RECORD, *PRECORD;
 
-typedef struct _Node{
+typedef struct _NODE{
     unsigned int count;
-    struct _Node * pNext[26];
-    _Node(){
+    struct _NODE * pNext[26];
+    _NODE(){
         count = 0;
         for(int i = 0; i < 26; i++){
             pNext[i] = NULL;
@@ -26,33 +26,37 @@ typedef struct _Node{
     }
 }NODE, *PNODE;
 
+bool readInfoInTextBuffer();
 void buildTree(char * buffer);
-void tranverse(PNODE p);
+void tranverseTree(PNODE p);
 void showInfomations(void);
 bool cmp(const PRECORD &lR, const PRECORD &rR);
 
 list<PRECORD> recordList; 
 PNODE root;
-char output[MAX_WORD_LENGTH];
+string output;
+string textBuffer;
 unsigned int outputIndex;
 
 int main(){
-    char buffer[MAX_WORD_LENGTH];
     root = new NODE();
-
-    ifstream inputTxt("words.txt");
-    if(!inputTxt.is_open()){
-        cout << "Open file error!" << endl;
-        return -1;
-    }
-    while(!inputTxt.eof()){
-        inputTxt >> buffer;
-        buildTree(buffer);
-    }
-    tranverse(root);
+    readInfoInTextBuffer();
+    tranverseTree(root);
     recordList.sort(cmp);
     showInfomations();
     return 0;
+}
+
+bool readInfoInTextBuffer(){
+    ifstream inputTxt("words.txt");
+    if(!inputTxt.is_open()){
+        cout << "Open file error!" << endl;
+        return false;
+    }
+    while(!inputTxt.eof()){
+        inputTxt >> textBuffer;
+        buildTree((char *)textBuffer.c_str());
+    }
 }
 
 void buildTree(char * buffer){
@@ -72,19 +76,20 @@ void buildTree(char * buffer){
     return;
 }
 
-void tranverse(PNODE p){
+void tranverseTree(PNODE p){
     if(p->count != 0){
         output[outputIndex] = '\0';
-        PRECORD pRecord = new RECORD(output, p->count);
+        PRECORD pRecord = new RECORD((char *)output.c_str(), p->count);
         recordList.push_back(pRecord);
     }
     for(int i = 0; i < 26; i++){
         if(p->pNext[i] != NULL){
             output[outputIndex] = i + CHAR_BASE;
             outputIndex++;
-            tranverse(p->pNext[i]);
+            tranverseTree(p->pNext[i]);
         }
     }
+    delete p;
     outputIndex --;
     return;
 }
@@ -92,6 +97,7 @@ void tranverse(PNODE p){
 void showInfomations(){
     for (auto & i : recordList){
         cout << i->word << " " << i->count << endl;
+        delete i;
     }
     return;
 }
