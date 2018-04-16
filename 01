@@ -1,0 +1,19 @@
+
+def count(words):
+    list = {}
+    words = words.split()
+    for word in words:
+        if word  in list:
+            list[word] += 1
+        else:
+            list[word] = 1
+    list = sorted(list.items(), key=lambda a: a[1], reverse=True)
+    print(list)
+    for a in list:
+        print(a)
+words = open("words.txt", "r").readline()
+count(words)
+
+
+
+
