@@ -60,10 +60,15 @@ python count_words.py
 python count_words.py --config=config.json
 ```
 
+## Run Unit Text
+```
+python test_count_words.py 
+```
+
 
 ## 扩展性
 1. 预设配置文件，可以通过修改配置文件不局限于读取words.txt
-2. 预留多文件分别统计词频功能
+2. 预留多文件统计词频功能
 
 
 
