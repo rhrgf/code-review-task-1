@@ -38,20 +38,20 @@ PNODE head;                 //head of trie
 vector<WORD> words;         //save words info
 int numberOfWords;          //number of words in file
 
-int main(int argn, char** args)
+int main(int argc, char** argv)
 {
-    if(argn == 1)
+    if(argc == 1)
     {
         cout << "no input file!" << endl;
         return -1;    
     }
     
     ifstream buffer;
-    buffer.open(args[1], std::ifstream::in);
+    buffer.open(argv[1], std::ifstream::in);
 
     if(buffer.fail())
     {
-        cout << "can not open file:" << args[1] << endl;
+        cout << "can not open file:" << argv[1] << endl;
         return -1;
     }
     
