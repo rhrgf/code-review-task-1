@@ -1,5 +1,9 @@
 package com.philosjay.fileReader;
 
+import com.philosjay.fileReader.elementLocator.ElementLocator;
+import com.philosjay.fileReader.elementLocator.ElementLocatorFactory;
+import com.philosjay.fileReader.elementLocator.WordLocator;
+
 import java.util.*;
 
 public class ElementIdentifier {
@@ -9,66 +13,73 @@ public class ElementIdentifier {
         List<String> elements = new ArrayList<>();
 
 
+        //先分别识别并定位单词、标点、空格等元素，分别储存在各自的List<Element>中
         List<List<Element>> segList = new ArrayList<>();
-        segList.add(locateWords(text));
-        segList.add(locatePunctuation(text));
-        segList.add(locateBlanks(text));
-
+        segList.add(ElementLocatorFactory.get("WordLocator").locate(text));
+        segList.add(ElementLocatorFactory.get("PunctuationLocator").locate(text));
+        segList.add(ElementLocatorFactory.get("NumberLocator").locate(text));
+        segList.add(ElementLocatorFactory.get("BlankLocator").locate(text));
+        
+        //使用 归并排序算法 拼接各种元素，以获得顺序装有全文单词、标点、空格等元素的List<Element>，供后续处理
         long min = text.length();
         int segIndex = 0;
 
+        // 获取非空元素List数量
         int countDown = segList.size();
+        for (int i=0;i<segList.size();i++){
+            if (segList.get(i).size()==0) countDown--;
+        }
+        //开始排序
         while (countDown>0){
             for (int i=0; i< segList.size(); i++){
 
 
                 if (segList.get(i).size()==0){
                     if (i == segList.size() - 1){
+
                         elements.add(segList.get(segIndex).get(0).content);
                         segList.get(segIndex).remove(0);
                         if (segList.get(segIndex).size()==0){
                             countDown--;
                         }
 
+                        segIndex = 0;
                         min = text.length();
                     }
-                    continue;
+                    continue;   // list为空进入下一层遍历
                 }
 
                 long indexInText = segList.get(i).get(0).indexInText;
-                String str = segList.get(i).get(0).content;
                 if (indexInText < min){
                     min = indexInText;
                     segIndex = i;
                 }
 
                 if (i == segList.size() - 1){
+                    // 选出最靠前的元素
                     elements.add(segList.get(segIndex).get(0).content);
                     segList.get(segIndex).remove(0);
                     if (segList.get(segIndex).size()==0){
                         countDown--;
                     }
 
+                    segIndex = 0;
                     min = text.length();
                 }
 
             }
         }
-
-
-
-
         return elements;
 
     }
 
 
     static public List<String>  getWords(String text){
-        //识别并储存单词的内容及其实索引
+        //从装有单词的List<Element>中提取单词
 
         List<String> wordList = new ArrayList<>();
 
-        List<Element> words = locateWords(text);
+        List<Element> words = ElementLocatorFactory.get("WordLocator").locate(text);
         for (Element word:
              words) {
          wordList.add(word.content);
@@ -77,106 +88,5 @@ public class ElementIdentifier {
         return wordList;
     }
 
-    static private List<Element> locateWords(String text){
-        //识别并储存单词的内容及其实索引
 
-        List<Element> wordList = new ArrayList<>();
-        String element = "";
-
-        boolean spotConstantElement = false;
-        char ch ;
-        for (int i=0 ; i<text.length(); i++){
-            ch = text.charAt(i);
-
-            if ((ch > 64 && ch < 91)||(ch > 96 && ch < 123)){
-
-
-                if (!spotConstantElement){
-                    //开始连续元素的记录
-                    spotConstantElement = true;
-                    element  = ch + "";
-                }else {
-                    //记录连续元素
-                    element += ch;
-                }
-
-            }else {
-                if (spotConstantElement){
-                    //中断连续元素的记录
-                    spotConstantElement = false;
-                    wordList.add(new Element(element,(long)i));
-                    element = "";
-                }
-
-            }
-        }
-        return wordList;
-    }
-
-    static private List<Element> locatePunctuation(String text){
-        //识别并储存单词的内容及其实索引
-
-        List<Element> puncList = new ArrayList<>();
-        String element = "";
-
-        boolean spotConstantPunctuation = false;
-        char ch ;
-        for (int i=0 ; i<text.length(); i++){
-            ch = text.charAt(i);
-
-            if ((ch > 64 && ch < 91)||(ch > 96 && ch < 123)){
-
-
-            }else {
-                if (spotConstantPunctuation){
-                    //中断连续元素的记录
-                    spotConstantPunctuation = false;
-                    puncList.add(new Element(element,(long)i));
-                }
-
-
-                if ((ch == ' ')){
-                    //不记录空格
-                    element = "";
-                }else {
-                    //记录标点符号
-                    element = ch + "";
-                    puncList.add(new Element(element,(long)i));
-                }
-            }
-        }
-        return puncList;
-    }
-
-    static private List<Element> locateBlanks(String text){
-        //识别并储存单词的内容及其实索引
-
-        List<Element> blankList = new ArrayList<>();
-        String element = "";
-
-        boolean spotConstantElement = false;
-        char ch ;
-        for (int i=0 ; i<text.length(); i++){
-            ch = text.charAt(i);
-
-            if (ch == ' '){
-                if (!spotConstantElement){
-                    //开始连续元素的记录
-                    spotConstantElement = true;
-                    element  = ch + "";
-                }else {
-                    //记录连续元素
-                    element += ch;
-                }
-
-            }else {
-                if (spotConstantElement){
-                    //中断连续元素的记录
-                    spotConstantElement = false;
-                    blankList.add(new Element(element,(long)i));
-                }
-            }
-        }
-        return blankList;
-    }
 }

@@ -12,19 +12,24 @@ public class Application {
     static public void main(String[] args){
 
         FileReader fileReader = new FileReader();
-        fileReader.loadFile("test3.txt");
+        fileReader.loadFile("test.txt");
 
         //获取所有单词
-        List<String> elements = fileReader.getWords();
-        WordCounter wordCounter = new WordCounter();
+        List<String> words = fileReader.getElements();
 
-        //获取统计结果
-        List<Map.Entry<String,Integer>> result = wordCounter.countWord(elements);
-
-        for (Map.Entry<String,Integer> word:
-             result) {
-            System.out.println(word.getKey() + "   " + word.getValue());
+        for (int i=0;i<words.size();i++){
+            System.out.println(words.get(i));
         }
+
+//        WordCounter wordCounter = new WordCounter();
+//
+//        //获取统计结果
+//        List<Map.Entry<String,Integer>> result = wordCounter.countWord(words);
+//
+//        for (Map.Entry<String,Integer> word:
+//             result) {
+//            System.out.println(word.getKey() + "   " + word.getValue());
+//        }
 
 
     }
