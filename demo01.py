@@ -21,7 +21,6 @@ def read_file(file_name):
 def count_words(words):
     words_count = collections.Counter(words)
     words_count = sorted(words_count.items(),key=lambda x:x[1],reverse=True)
-    print(words_count)
     return words_count
 
 #结果输出
@@ -37,14 +36,12 @@ if __name__ == '__main__':
     Usage:
       demo01 <input> <output> [options]
       demo01 --help
-    Options:
-      --curriculum=<file>        Curriculum json file for environment [default: None].
+    Options:      
     
     '''
     options = docopt(_USAGE)
     input_file = options['<input>']
     output_file = options['<output>']
-    print (input_file)
     words = read_file(input_file)
     words_count=count_words(words)
     print_result(output_file,words_count)
