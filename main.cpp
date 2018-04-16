@@ -1,36 +1,42 @@
 #include<iostream>
+#include<fstream>
 #include<vector>
 #include<cstring>
 #include<algorithm>
 using namespace std;
 
-struct node 
+#define numberOfCharacter 26
+#define BUFFERSIZE 1024
+//node of trie 
+typedef struct _NODE 
 {
     char ch;
     int n;
-    node* next[26];
+    _NODE* next[numberOfCharacter];
     
-    node(char ch):ch(ch),n(0)
+    _NODE(char ch):ch(ch),n(0)
     {
-        for(int i=0; i<26; ++i)
+        for(int i=0; i<numberOfCharacter; ++i)
             next[i] = nullptr;
     }
-};
-struct word 
+}NODE,* PNODE; 
+
+// a struct to save signal word info
+typedef struct _WORD 
 {
-    char* str;
-    int n;
-};
+    string str;
+    int number;
+}WORD, * PWORD;
 
-void count(char* buffer, int wordStart, int wordEnd);
-void dfs(node* cur, int deep);
+void countSingalWord(string& word);
+void readOutData(PNODE cur, int deep);
 void init();
-bool compfun(word a, word b);
-node* newNode(char ch);
+bool cmpfun(WORD a, WORD b);
+PNODE newNode(char ch);
 
-node* head;
-vector<word> words;
-int numberOfWords;
+PNODE head;                 //head of trie
+vector<WORD> words;         //save words info
+int numberOfWords;          //number of words in file
 
 int main(int argn, char** args)
 {
@@ -40,111 +46,89 @@ int main(int argn, char** args)
         return -1;    
     }
     
-    FILE* fp  = fopen(args[1],"r");
-    if(fp == nullptr)
+    ifstream buffer;
+    buffer.open(args[1], std::ifstream::in);
+
+    if(buffer.fail())
     {
         cout << "can not open file:" << args[1] << endl;
         return -1;
     }
     
-    unsigned int  fileSize;
-    char* buffer;
-
-    fseek(fp, 0 , SEEK_END);
-    fileSize = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-    buffer = new char[fileSize+1];
-    buffer[fileSize] = 0x0;
-    fread(buffer, sizeof(char), fileSize, fp);
-    fclose(fp);
-    
     init();
-    bool flag = false;
-    int wordStart;
-    for(int i=0; i<fileSize;++i)
+    
+    string word;
+    while(buffer >> word)
     {
-        if(!flag)
-        {
-            if(buffer[i] == ' ')
-                continue;
-            else 
-            {
-                flag = true;
-                wordStart = i;
-            }
-        }
-        else
-        {
-
-            if(buffer[i] != ' ')
-                continue;
-            else 
-           {
-               flag = false;
-               count(buffer, wordStart, i);
-            }
-        }
+        countSingalWord(word);
     }
-    dfs(head, 0);
-    sort(words.begin(), words.end(), compfun);
+    
+    readOutData(head, 0);
+    sort(words.begin(), words.end(), cmpfun);
     for(auto wr:words)
     {
-        cout << wr.str << "\t" << wr.n  << endl;
-        delete wr.str;
+        cout << wr.str << "\t" << wr.number  << endl;
     }
 
 }
 
 void init()
 {
-    head = new node(' ');
+    head = new NODE(' ');
     numberOfWords = 0;
 }
 
-void count(char* buffer, int wordStart, int wordEnd)
+void countSingalWord(string& word)
 {
-    node* cur = head;
-    
-    for(int i=wordStart; i<wordEnd; ++i)
+    PNODE cur = head;
+
+// if node exists, then create a new node    
+    for(auto ch: word)
     {
-        int no = buffer[i]-'a';
+        int no = ch-'a';
         if(!(*cur).next[no])
-            (*cur).next[no] = newNode(buffer[i]);
+        {
+            (*cur).next[no] = newNode(ch);
+        }
         cur  = (*cur).next[no];
     }
+
     ++(*cur).n;
     if((*cur).n == 1)
+    {
         ++numberOfWords;
+    }
 }
 
-node* newNode(char ch)
+PNODE newNode(char ch)
 {
-    return new node(ch);
+    return new NODE(ch);
 }
 
-void dfs(node* cur, int deep)
+void readOutData(PNODE cur, int deep)
 {
-    static char buf[1024] = {0};
+    static string buf(BUFFERSIZE, 0x0);
     static int no = 0;
 
     buf[deep] = (*cur).ch;
     if((*cur).n != 0)
     {
-        char* tmp = new char[deep+1];
-        memcpy(tmp, buf+1, deep+1);
-        words.push_back(word{tmp,(*cur).n});
+        words.push_back(WORD{buf,(*cur).n});
     }
-    for(int i=0; i<26; ++i)
+    for(int i=0; i<numberOfCharacter; ++i)
     {
         if((*cur).next[i] == nullptr)
+        {
             continue;
-        dfs((*cur).next[i], deep+1);
+        }
+        readOutData((*cur).next[i], deep+1);
     }
     buf[deep] = 0x0;
+    //delete node
     delete cur;
 }
 
-bool compfun(word a, word b)
+bool cmpfun(WORD a, WORD b)
 {
-    return a.n > b.n;
+    return a.number > b.number;
 }
