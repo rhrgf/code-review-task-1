@@ -38,3 +38,41 @@ day 1
   - 自学资料：
     - http://www.yangzhiping.com/tech/github.html
   - 自学任务：熟悉Github使用
+
+- - -
+# 实现
+
+## Setup
+1. 安装``Python3.6``
+2. 安装``pip``
+3. 安装所需库
+```
+pip install -r requirements.txt
+```
+
+## Run
+```
+python count_words.py
+```
+
+## Run With Config
+```
+python count_words.py --config=config.json
+```
+
+## Run Unit Text
+```
+python test_count_words.py 
+```
+
+
+## 扩展性
+1. 预设配置文件，可以通过修改配置文件不局限于读取words.txt
+2. 预留多文件统计词频功能
+
+
+
+
+
+
+
