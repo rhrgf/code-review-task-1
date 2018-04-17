@@ -2,14 +2,15 @@
 
 def read():
     contents = ''
+    txt = input("请输入txt文件名：")
     try:
-    	    with open('word.txt','r') as file:
-        lines = file.readlines()
-        for line in lines:
-            line = line.replace('\n',' ')
-            contents = contents + line
+        with open(txt,'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                line = line.replace('\n',' ')
+                contents = contents + line
     except:
-    	print("读取失败")
+        print("读取失败")
     return contents
 
 def count(contents):
@@ -26,6 +27,6 @@ def count(contents):
 
 
 def main():
-    contents=read()
+    contents = read()
     count(contents)
 main()
