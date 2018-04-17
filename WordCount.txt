@@ -10,18 +10,18 @@ import java.util.Map;
 import java.util.Set;  
 import java.util.StringTokenizer;    
 import java.util.TreeSet;  
-import wordcount.WordEntity;  
   
-public class WordCount {  
   
- 
-    public void displayWord(String fileName){  
-        //显示输出  
+public class WordCount { 
+	
+	public void Count (String fileName){
+    
+    	//文件读取
         try {  
-            BufferedReader br = new BufferedReader(new FileReader(fileName));  
+            BufferedReader file = new BufferedReader(new FileReader(fileName));  
             String s;  
             StringBuffer sb = new StringBuffer();  
-            while ((s = br.readLine()) != null) {  
+            while ((s = file.readLine()) != null) {  
                 sb.append(s);  
             }  
               
@@ -36,19 +36,16 @@ public class WordCount {
                     count = map.get(letter).intValue() + 1;  
                 }  
                 map.put(letter,count);  
-            }  
+            } 
               
-            Set<WordEntity> set = new TreeSet<WordEntity>();  
+            Set<WordSort> set = new TreeSet<WordSort>();  
             for (String key : map.keySet()) {  
-                set.add(new WordEntity(key,map.get(key)));  
+               set.add(new WordSort(key,map.get(key)));  
             }  
-  
-           
-            Iterator<WordEntity> it1 = set.iterator();  
-            int count=it1.next().getCount();  
-            for (Iterator<WordEntity> it = set.iterator(); it.hasNext(); ) {  
-                WordEntity w = it.next();  
-     System.out.println(w.getKey() + "  "+ w.getCount());  
+            //按出现次数从大到小输出
+            for (Iterator<WordSort> it = set.iterator(); it.hasNext(); ) {  
+                WordSort w = it.next();  
+                System.out.println(w.getKey() + "  "+ w.getCount());  
                   
             }  
         } catch (FileNotFoundException e) {  
@@ -57,6 +54,8 @@ public class WordCount {
             System.out.println("文件读异常~！");  
         }  
   
-    }  
+    } 
   
 }  
+
+
