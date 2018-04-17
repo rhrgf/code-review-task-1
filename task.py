@@ -1,11 +1,15 @@
+
+
 def read():
     contents = ''
-    with open('word.txt','r') as file:
+    try:
+    	    with open('word.txt','r') as file:
         lines = file.readlines()
         for line in lines:
             line = line.replace('\n',' ')
             contents = contents + line
-#   print(contents)
+    except:
+    	print("读取失败")
     return contents
 
 def count(contents):
@@ -17,7 +21,6 @@ def count(contents):
         else :
             dic[content] = 1
     dics=sorted(dic.items(),key=lambda d:d[1],reverse = True)
-#   print(dics)
     for dic in dics:
         print(dic[0]+':'+str(dic[1]))
 
