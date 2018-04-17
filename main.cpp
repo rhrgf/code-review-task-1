@@ -35,9 +35,9 @@ int wordLength(FILE *fp)
 	return length;
 }
 
-int searchList(pIdNode list, char *word)
+int searchList(PIDNODE list, char *word)
 {
-	pIdNode tempNode = list;
+	PIDNODE tempNode = list;
 
 	while (tempNode->next)
 	{
@@ -49,11 +49,11 @@ int searchList(pIdNode list, char *word)
 		}
 	}
 
-	pIdStruct newId = (pIdStruct)malloc(sizeof(idStruct));
+	PIDSTRUCT newId = (PIDSTRUCT)malloc(sizeof(IDSTRUCT));//动态分配的空间在sortList()函数中以节点为单位释放
 	newId->identifier = word;
 	newId->counter = 1;
 
-	pIdNode newNode = (pIdNode)malloc(sizeof(idNode));
+	PIDNODE newNode = (PIDNODE)malloc(sizeof(IDNODE));//动态分配的空间在sortList()函数中以节点为单位释放
 	newNode->id = newId;
 	newNode->next = NULL;
 	tempNode->next = newNode;
@@ -61,17 +61,17 @@ int searchList(pIdNode list, char *word)
 	return 0;
 }
 
-void swapNeighbor(pIdNode pPNode)
+void swapNeighbor(PIDNODE pPNode)
 {
-	pIdNode tempNode = pPNode->next;
+	PIDNODE tempNode = pPNode->next;
 	pPNode->next = tempNode->next;
 	tempNode->next = pPNode->next->next;
 	pPNode->next->next = tempNode;
 }
 
-pIdNode slNode(pIdNode list)
+PIDNODE penultNode(PIDNODE list)
 {
-	pIdNode tempNode = list;
+	PIDNODE tempNode = list;
 
 	if (!list->next)
 	{
@@ -93,10 +93,10 @@ pIdNode slNode(pIdNode list)
 	return tempNode;
 }
 
-void sortList(pIdNode list)
+void sortList(PIDNODE list)
 {
-	pIdNode tempNode = list;
-	pIdNode secLastNode = NULL;
+	PIDNODE tempNode = list;
+	PIDNODE secLastNode = NULL;
 	while (list->next)
 	{
 		while (!tempNode->next == 0)
@@ -114,7 +114,7 @@ void sortList(pIdNode list)
 			}
 			tempNode = tempNode->next;
 		}
-		secLastNode = slNode(list);
+		secLastNode = penultNode(list);
 		printf("%s %d\n", secLastNode->next->id->identifier, secLastNode->next->id->counter);
 		free(secLastNode->next);
 		secLastNode->next = NULL;
@@ -131,7 +131,7 @@ int main()
 		return 0;
 	}
 
-	idNode startList;
+	IDNODE startList;
 
 	while (1)
 	{

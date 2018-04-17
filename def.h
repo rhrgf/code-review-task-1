@@ -5,13 +5,13 @@ typedef struct
 {
 	char *identifier = NULL;
 	int counter = 0;
-}idStruct, *pIdStruct;
+}IDSTRUCT, *PIDSTRUCT;
 
 typedef struct node
 {
-	pIdStruct id = NULL;
+	PIDSTRUCT id = NULL;
 	node *next = NULL;
-}idNode, *pIdNode;
+}IDNODE, *PIDNODE;
 
 #endif // !_DEF_H
 
