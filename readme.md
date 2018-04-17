@@ -39,7 +39,7 @@ day 1
     - http://www.yangzhiping.com/tech/github.html
   - 自学任务：熟悉Github使用
 
-#代码审查
+# 代码审查
 - 明确效果
   - 提升代码质量
   - 统一代码风格
