@@ -21,18 +21,15 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Word_Frequency.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\Word_Frequency_Generator\Word_Frequency.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Word_Frequency_Generator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Word_Frequency.cpp">
+    <ClCompile Include="unittest1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
