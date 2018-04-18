@@ -1,0 +1,61 @@
+package wordcount;
+
+import java.io.BufferedReader;  
+import java.io.FileNotFoundException;  
+import java.io.FileReader;  
+import java.io.IOException;  
+import java.util.HashMap;  
+import java.util.Iterator;  
+import java.util.Map;  
+import java.util.Set;  
+import java.util.StringTokenizer;    
+import java.util.TreeSet;  
+  
+  
+public class WordCount { 
+	
+	public void Count (String fileName){
+    
+    	//文件读取
+        try {  
+            BufferedReader file = new BufferedReader(new FileReader(fileName));  
+            String s;  
+            StringBuffer sb = new StringBuffer();  
+            while ((s = file.readLine()) != null) {  
+                sb.append(s);  
+            }  
+              
+            Map<String,Integer> map = new HashMap<String, Integer>();  
+            StringTokenizer st = new StringTokenizer(sb.toString(),",.! \n");  
+            while (st.hasMoreTokens()) {  
+                String letter = st.nextToken().trim();  
+                int count;  
+                if (!map.containsKey(letter)) {  
+                    count = 1;  
+                } else {  
+                    count = map.get(letter).intValue() + 1;  
+                }  
+                map.put(letter,count);  
+            } 
+              
+            Set<WordSort> set = new TreeSet<WordSort>();  
+            for (String key : map.keySet()) {  
+               set.add(new WordSort(key,map.get(key)));  
+            }  
+            //按出现次数从大到小输出
+            for (Iterator<WordSort> it = set.iterator(); it.hasNext(); ) {  
+                WordSort w = it.next();  
+                System.out.println(w.getKey() + "  "+ w.getCount());  
+                  
+            }  
+        } catch (FileNotFoundException e) {  
+            System.out.println("文件未找到~！");  
+        } catch (IOException e) {  
+            System.out.println("文件读异常~！");  
+        }  
+  
+    } 
+  
+}  
+
+
